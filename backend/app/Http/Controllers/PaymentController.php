@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PaymentStatusMail;
+use App\Mail\PaymentSuccessMail;
 use App\Models\Payment;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class PaymentController extends ApiController
 {
+
+
     public function index(Request $request): JsonResponse
     {
         $user = $this->userFromToken($request);
@@ -68,22 +73,26 @@ class PaymentController extends ApiController
         return response()->json(['payment' => $this->paymentPayload($payment)], 201);
     }
 
-    public function updateStatus(Request $request, Payment $payment): JsonResponse
-    {
-        $user = $this->userFromToken($request);
+   public function updateStatus(Request $request, Payment $payment): JsonResponse
+{
+    $user = $this->userFromToken($request);
 
-        if (! $user || $user->role !== 'admin') {
-            return response()->json(['message' => 'Admin access required'], 403);
-        }
-
-        $validated = $request->validate([
-            'status' => ['required', Rule::in(['Approved', 'Rejected'])],
-        ]);
-
-        $payment->update(['status' => $validated['status']]);
-
-        return response()->json(['payment' => $this->paymentPayload($payment)]);
+    if (! $user || $user->role !== 'admin') {
+        return response()->json(['message' => 'Admin access required'], 403);
     }
+
+    $validated = $request->validate([
+        'status' => ['required', Rule::in(['Approved', 'Rejected'])],
+    ]);
+
+    $payment->update(['status' => $validated['status']]);
+
+    // Send email to the student
+    $studentEmail = $payment->user->email;
+    Mail::to($studentEmail)->send(new PaymentSuccessMail($payment));
+
+    return response()->json(['payment' => $this->paymentPayload($payment)]);
+}
 
     private function paymentPayload(Payment $payment): array
     {

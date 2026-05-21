@@ -12,3 +12,5 @@ Route::post('/logout', [AuthController::class, 'logout']);
 Route::get('/payments', [PaymentController::class, 'index']);
 Route::post('/payments', [PaymentController::class, 'store']);
 Route::patch('/payments/{payment}/status', [PaymentController::class, 'updateStatus']);
+
+
