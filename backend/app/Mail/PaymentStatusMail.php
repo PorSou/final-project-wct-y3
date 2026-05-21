@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class PaymentSuccessMail extends Mailable  // ← must match filename
+class PaymentStatusMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -21,10 +21,10 @@ class PaymentSuccessMail extends Mailable  // ← must match filename
     public function build(): self
     {
         $subject = $this->payment->status === 'Approved'
-            ? 'RUPP Payment Approved ✅'
-            : 'RUPP Payment Rejected ❌';
+            ? '[STUDENT] ✅ Your Payment Has Been Approved'
+            : '[STUDENT] ❌ Your Payment Has Been Rejected';
 
         return $this->subject($subject)
-                    ->view('emails.payment-success');
+                    ->view('emails.payment-status');
     }
 }
