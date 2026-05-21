@@ -21,6 +21,6 @@ class PaymentSubmittedMail extends Mailable
     public function build(): self
     {
         return $this->subject('[ADMIN] 📋 New Payment Submitted - Action Required')
-                    ->view('emails.payment-status');
+                    ->view('emails.payment-submitted');
     }
 }

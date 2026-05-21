@@ -2,18 +2,13 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Payment Status</title>
+    <title>New Payment Submitted</title>
 </head>
 <body style="font-family: Arial; background:#f5f5f5; padding:40px;">
 <div style="background:white; max-width:600px; margin:auto; padding:30px; border-radius:10px;">
 
-    @if($payment->status === 'Approved')
-        <h1 style="color:#16a34a;">✅ Payment Approved</h1>
-        <p>Your payment has been reviewed and <strong>approved</strong> successfully.</p>
-    @else
-        <h1 style="color:#dc2626;">❌ Payment Rejected</h1>
-        <p>Your payment has been reviewed and <strong>rejected</strong>. Please contact admin for more details.</p>
-    @endif
+    <h1 style="color:#2563eb;">📋 New Payment Submitted</h1>
+    <p>A student has submitted a payment. Please review and take action.</p>
 
     <hr>
 
@@ -29,14 +24,13 @@
 
     <p>
         <strong>Status:</strong>
-        <span style="
-            background: {{ $payment->status === 'Approved' ? '#16a34a' : '#dc2626' }};
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-        ">
-            {{ $payment->status }}
+        <span style="background:orange; color:white; padding:5px 12px; border-radius:20px;">
+            Pending
         </span>
+    </p>
+
+    <p style="margin-top:20px; color:#6b7280;">
+        Please log in to the admin dashboard to approve or reject.
     </p>
 
 </div>
